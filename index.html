@@ -85,8 +85,41 @@
   .tagline { margin-bottom: 30px; font-size: 14.5px; font-weight: 500; color: var(--ink-soft); }
 
   p.sub {
-    margin-top: 16px; font-size: 16px; font-weight: 500;
-    color: var(--ink); line-height: 1.6;
+    margin-top: 14px; font-size: 16px; font-weight: 600;
+    color: var(--ink); line-height: 1.55;
+  }
+
+  /* "deal confirmed" receipt on the yes screen */
+  .perks {
+    margin: 22px auto 0; max-width: 280px;
+    text-align: left;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 16px rgba(232,78,133,.12);
+  }
+  .perks .head {
+    font-size: 11px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--pink-deep);
+    text-align: center; margin-bottom: 12px; opacity: .9;
+  }
+  .perks li {
+    list-style: none; display: flex; align-items: flex-start; gap: 9px;
+    font-size: 14.5px; font-weight: 600; color: var(--ink);
+    padding: 5px 0; opacity: 0; transform: translateX(-6px);
+    animation: slideIn .4s ease forwards;
+  }
+  .perks li .ck { color: var(--pink); font-weight: 800; flex: none; }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+  .fineprint {
+    margin-top: 16px; font-size: 11px; line-height: 1.5;
+    font-weight: 500; color: var(--ink-soft); font-style: italic; opacity: .85;
+  }
+  .signoff {
+    margin-top: 14px; font-family: "Fraunces", Georgia, serif;
+    font-size: 15px; font-weight: 600; color: var(--pink-deep);
   }
 
   /* Yes + No, clean and side by side */
@@ -243,7 +276,7 @@
     card.innerHTML =
       '<div class="emoji">😏</div>' +
       '<h1>Massages when I<br>come over?</h1>' +
-      '<div class="tagline">Choose wisely 💆‍♀️</div>' +
+      '<div class="tagline">There&rsquo;s only one right answer 💆‍♀️</div>' +
       '<div class="buttons">' +
         '<button id="yes">Yes 💕</button>' +
         '<button id="no">No</button>' +
@@ -254,7 +287,7 @@
     yesBtn.onmouseenter = function () { blip(880, .06); };
 
     var no = document.getElementById('no');
-    var taunts = ["No","Hmm? 😏","Try again","Nope 🙅","So close!","Just say yes 🥺","Too slow!","It's right there 👉","Resistance is futile 💕","Okay fine — yes 😅"];
+    var taunts = ["No","You sure? 😏","Nice try","Nope 🙅","Catch me!","Pretty please 🥺","Too slow!","Wrong button 👉","My arms are warmed up 💪","Resistance is futile 💕","Okay fine — yes 😅"];
     var dodges = 0;
 
     function flee(e) {
@@ -302,10 +335,30 @@
     var no = document.getElementById('no');
     if (no) no.remove();
     card.style.animation = 'none'; void card.offsetWidth; card.style.animation = 'pop .55s cubic-bezier(.2,1.2,.4,1) both';
+    var perks = [
+      'Premium massages, on demand',
+      'You pick the movie (no debate)',
+      'Snacks are handled — relax',
+      'Unlimited cuddles, zero cost',
+      'Complaining? Not allowed 🙅‍♂️'
+    ];
+    var perksHTML = perks.map(function (p, i) {
+      return '<li style="animation-delay:' + (0.15 + i * 0.12) + 's">' +
+             '<span class="ck">✓</span><span>' + p + '</span></li>';
+    }).join('');
+
     card.innerHTML =
-      '<div class="emoji">💆‍♀️</div>' +
-      '<h1>Yesss 😏</h1>' +
-      '<p class="sub">It\'s a date. I\'ve got you — best massages, guaranteed. 💕<br><br>Now hurry up and come over. ❤️</p>';
+      '<div class="emoji">🚗💨</div>' +
+      '<h1>Knew it. 😏</h1>' +
+      '<p class="sub">Deal locked in — I\'m already heading your way. 💕</p>' +
+      '<div class="perks">' +
+        '<div class="head">✨ Tonight\'s Agreement ✨</div>' +
+        '<ul>' + perksHTML + '</ul>' +
+      '</div>' +
+      '<p class="fineprint">Terms: offer valid indefinitely &amp; non-transferable. ' +
+        'Management reserves the right to fall asleep mid-movie. ' +
+        'Hand cramps are a you-problem, not a me-problem. 😌</p>' +
+      '<div class="signoff">— your masseuse, en route ❤️</div>';
     burst(50);
     confetti(140);
     happyTune();
